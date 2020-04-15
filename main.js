@@ -2,9 +2,25 @@
 
 let slideImgs = document.querySelectorAll('.slide-in');
 
-function checkSlide(e) {
-    console.log(e);
-}
+let checkSlide = debounce((e) => {
+    slideImgs.forEach(slideImage => {
+        // Check halfway mark:
+        let slideInAt = (window.scrollY + window.innerHeight) - slideImage.height/2;
+        console.log(window.scrollY + window.innerHeight)
+        // Check if slid past:
+        let slidPast = slideImage.offsetTop + slideImage.height;
+        
+        // Readable values for our if statements:
+        let isHalfwayShown = slideInAt > slideImage.offsetTop;
+        let isScrolledPassed = window.scrollY > slidPast;
+
+        if(isHalfwayShown && !isScrolledPassed) {
+            slideImage.classList.add('active');
+        } else {
+            slideImage.classList.remove('active');
+        }
+    });
+}, 30, true);
 
 
 window.addEventListener('scroll', checkSlide);
